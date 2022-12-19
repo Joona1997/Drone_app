@@ -10,7 +10,7 @@ export interface Violation  {
     positionY: number;
     positionX: number;
     distance: number;
-};
+}
 
 export interface Drone  {
     serialNumber: string;
@@ -18,4 +18,13 @@ export interface Drone  {
     positionY: number;
     positionX: number;
     distance: number;
-};
+}
+
+export type Pilot = {
+    pilotId: string,
+    firstName: string,
+    lastName: string,
+    phoneNumber: string,
+    createdDt: Date,
+    email: string
+}

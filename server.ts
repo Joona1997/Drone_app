@@ -1,10 +1,10 @@
 import express from "express";
 import http from 'http';
-import {Socket, Server } from 'socket.io';
-import { dataProcessing } from "./dataProcessing";
+import { Server } from 'socket.io';
+import { DroneViolations } from "./DroneViolations";
 
 // Fetches and precesses data.
-let processor = new dataProcessing
+const processor = new DroneViolations
 
 setInterval(processor.updateDroneList , 2000)
 
@@ -16,7 +16,7 @@ const httpServer = http.createServer(app);
 // Start the Socket
 const io = new Server(httpServer, {
   cors: {
-      origin: "http://localhost:3000",
+      origin: "*",
       methods: ["GET"]  
   }
 });
@@ -29,17 +29,9 @@ io.on('connection', client => {
 });
 
 
-/** Rules of our API */
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-
-    next();
-});
-
 // Sends the first list, when someone connects to website
 app.get('', (req, res, next) => {
-    return res.status(200).json(processor.getViolations);
+    return res.status(200).json(JSON.stringify(processor.getViolations));
 });
 
 
