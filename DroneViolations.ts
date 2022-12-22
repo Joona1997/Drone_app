@@ -3,10 +3,9 @@ import {XMLParser} from 'fast-xml-parser'
 import {Violation, Drone, Pilot} from './backendTypes'
 
 
-//dictionary, testit
 // Fetches, processes and stores the violation data
 export class DroneViolations {
-  private violations;
+  public violations;
 
   constructor(){
       this.violations = new Map()
@@ -18,6 +17,7 @@ export class DroneViolations {
     return jsonText
   }
 
+  
   // Gets the Drone data and processes it
   // Uses getUser() or updateUser() depending on if the drone is already on the list
   // At the end uses deleteOld() to delete old users.
@@ -29,16 +29,14 @@ export class DroneViolations {
         {timeout: 2000},
       );
       
+      // Parsed data
+      const inJSON = parseXML(data)
       
-      // Parsing the XML file
-      const parser = new XMLParser(options);
-      const parsedXml = parser.parse(data);
-  
       // Time from the snapshot
-      const time: Date = new Date(parsedXml.report.capture.clock.snapshotTimestamp)
-
+      const time: Date = new Date(inJSON.clock.snapshotTimestamp)
+      
       // List of drones from the parsed XML 
-      const dronesJSON = parsedXml.report.capture.drone
+      const dronesJSON = inJSON.drone
       
       // Goes through the drones and gets users or updates them to the violations
       dronesJSON.forEach((droneJSON: Drone) => {
@@ -47,18 +45,22 @@ export class DroneViolations {
           timeStamp: time,
           positionY: Math.round(droneJSON.positionY / 1000),
           positionX: Math.round(droneJSON.positionX / 1000),
-          distance: getDistance(droneJSON)
+          distance: getDistance(droneJSON.positionY, droneJSON.positionX)
         }
-        //Check to see if drone is already in the list
+        
+        // Check to see if drone is already in the list
         if(this.violations.has(drone.serialNumber)){
           this.updateViolation(drone)
         }
+        // Gets new user if inside violation distance
         else if (drone.distance <= 100){
+          drone.distance = Math.round(drone.distance)
           this.getUser(drone)
         }
       });
       
       this.deleteOld() 
+      
       // "response status is: 200"
       console.log('updateDroneList response status is: ', status);
         
@@ -121,7 +123,7 @@ export class DroneViolations {
     const violation = this.violations.get(drone.serialNumber)
     violation.lastSeen = drone.timeStamp
     if(violation.distance > drone.distance){
-      violation.distance = drone.distance
+      violation.distance = Math.round(drone.distance)
       violation.positionX = drone.positionX
       violation.positionY = drone.positionY
     }
@@ -143,6 +145,16 @@ export class DroneViolations {
   
 }
 
+// Parses XML string
+export function parseXML(data: string){
+  // Parsing the XML file
+  const parser = new XMLParser(options);
+  const parsedXml = parser.parse(data);
+
+  // List of drones and timeStamp from the parsed XML 
+  return parsedXml.report.capture
+}
+
 // Options for XML parser, so that snapShotTimeStamp can be found
 const options = {
   ignoreAttributes: false,
@@ -151,13 +163,10 @@ const options = {
 };
 
 // Calculates the distance between two points (The nest and the drone).
-function getDistance(drone : Drone): number {
+export function getDistance(y : number, x : number): number {
   const centerX = 250000;
   const centerY = 250000;
-  const posX: number = drone.positionX
-  const posY: number = drone.positionY
-
-  const distance: number = (Math.sqrt((Math.pow(centerX-posX, 2)) + (Math.pow(centerY - posY, 2))) / 1000);
+  const distance: number = (Math.sqrt((Math.pow(centerX-x, 2)) + (Math.pow(centerY - y, 2))) / 1000);
     
-  return Math.round(distance)
+  return distance
 }
