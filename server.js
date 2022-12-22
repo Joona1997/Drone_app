@@ -51,7 +51,7 @@ io.on('connection', client => {
 });
 // Sends the first list, when someone connects to website
 app.get('/', (req, res, next) => {
-    return res.status(200).json(JSON.stringify(processor.getViolations));
+    return res.status(200).json(processor.getViolations);
 });
 // Handles erros
 app.use((req, res, next) => {
