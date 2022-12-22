@@ -13,6 +13,8 @@ const app = express();
 // Server handling
 const httpServer = http.createServer(app);
 
+app.use(express.static('build'))
+
 // Start the Socket
 const io = new Server(httpServer, {
   cors: {
