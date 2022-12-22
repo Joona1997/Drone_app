@@ -1,5 +1,5 @@
-import { DroneViolations, getDistance, parseXML } from "../DroneViolations";
-import { Drone, Violation} from "../backendTypes";
+import { DroneViolations, getDistance, parseXML } from "../src/DroneViolations";
+import { Drone, Violation} from "../src/backendTypes";
 
 describe("getDistance", () => {
     const Y = 350000
