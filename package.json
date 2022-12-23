@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "start": "node backend/dist/src/server.js",
-    "postinstall": "tsc",
+    "postinstall": "cd /backend && tsc",
     "watch-node": "nodemon backend/src/server.ts",
     "watch-ts": "tsc -w",
     "build": "tsc --project ./",
