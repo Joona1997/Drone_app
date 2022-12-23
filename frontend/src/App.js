@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Violations from './components/Violations'
 import io from 'socket.io-client'
 import { useEffect } from 'react'
-import Canvas from './components/Canvas'
 
 // Connect to the socket
 const socket = io('https://drone-violations-app.herokuapp.com/', {

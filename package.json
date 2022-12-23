@@ -4,9 +4,9 @@
   "description": "Backend for the drone_app",
   "main": "server.ts",
   "scripts": {
-    "start": "node backend/dist/server.js",
+    "start": "node backend/dist/src/server.js",
     "postinstall": "cd backend && tsc",
-    "watch-node": "nodemon backend/dist/server.js",
+    "watch-node": "nodemon backend/src/server.ts",
     "watch-ts": "tsc -w",
     "build": "tsc --project ./backend",
     "test": "jest ."
