@@ -5,10 +5,10 @@
   "main": "server.ts",
   "scripts": {
     "start": "node backend/dist/src/server.js",
-    "postinstall": "cd backend && tsc",
+    "postinstall": "tsc",
     "watch-node": "nodemon backend/src/server.ts",
     "watch-ts": "tsc -w",
-    "build": "tsc --project ./backend",
+    "build": "tsc --project ./",
     "test": "jest ."
   },
   "repository": {
