@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {XMLParser} from 'fast-xml-parser'
-import {Violation, Drone, Pilot} from './backendTypes'
+import {Violation, Drone, Pilot} from './types'
 
 
 // Fetches, processes and stores the violation data
@@ -104,7 +104,7 @@ export class DroneViolations {
       }
       
       this.violations.set(drone.serialNumber, violation)
-      
+      return violation
       //  "response status is: 200"
       console.log('getUser response status is: ', status);     
     } catch (error) {

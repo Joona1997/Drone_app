@@ -1,5 +1,5 @@
 import { DroneViolations, getDistance, parseXML } from "../src/DroneViolations";
-import { Drone, Violation} from "../src/backendTypes";
+import { Drone, Violation} from "../src/types.d";
 
 describe("getDistance", () => {
     const Y = 350000
@@ -29,22 +29,30 @@ describe("parseXML", () => {
 
 describe("getUser", () => {
     const processor = new DroneViolations
-    const violation: Violation = {
-        pilotId: "Test1",
-        firstName: "Jaakko",
-        lastName: "Mattila",
-        phoneNumber: "0303030",
-        email: "jaakko.mattila@gmail.com",
-        serialNumber: "Testviolation",
-        lastSeen: new Date("2022-12-21T07:16:47.252Z"),
-        positionY: 489185.40421627177,
-        positionX: 204597.55685130172,
-        distance: 60,
-      }
-    processor.violations.set("Testviolation", violation)
+    const drone: Drone = {
+        serialNumber: "SN-DBZBtXSR5R",
+        timeStamp: new Date(),
+        positionX: 100,
+        positionY: 100,
+        distance: 150,
+    }
+
+    const vio: Violation = {
+        pilotId: "P-REh9qYIG9A",
+        firstName: "Wayne",
+        lastName: "Jakubowski",
+        phoneNumber: "+210862175106",
+        email: "wayne.jakubowski@example.com",
+        serialNumber: "SN-DBZBtXSR5R",
+        lastSeen: drone.timeStamp,
+        positionX: 100,
+        positionY: 100,
+        distance: 150,
+    }
+    
        
-    it("processor.violations.set() adds a new violation", () => {
-        expect(processor.violations.has("Testviolation")).toBeTruthy();
+    it("processor.violations.set() adds a new violation", async () => {
+        await expect(processor.getUser(drone)).resolves.toBe(vio);
     });
 
 });
