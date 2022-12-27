@@ -13,7 +13,7 @@ export class DroneViolations {
 
   // Method for server to access violations
   public get getViolations() {
-    const jsonText = JSON.stringify(Array.from(this.violations.values()));
+    const jsonText = JSON.stringify(Array.from(this.violations.entries()));
     return jsonText
   }
 
@@ -104,7 +104,7 @@ export class DroneViolations {
       }
       
       this.violations.set(drone.serialNumber, violation)
-      return violation
+      
       //  "response status is: 200"
       console.log('getUser response status is: ', status);     
     } catch (error) {
@@ -127,7 +127,6 @@ export class DroneViolations {
       violation.positionX = drone.positionX
       violation.positionY = drone.positionY
     }
-    this.violations.set(drone.serialNumber, violation)
   }
 
   // Deletes violations that are older than 10 minutes.

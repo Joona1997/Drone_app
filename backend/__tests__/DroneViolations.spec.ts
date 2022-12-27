@@ -1,5 +1,5 @@
 import { DroneViolations, getDistance, parseXML } from "../src/DroneViolations";
-import { Drone, Violation} from "../src/types.d";
+import { Drone} from "../src/types.d";
 
 describe("getDistance", () => {
     const Y = 350000
@@ -29,32 +29,22 @@ describe("parseXML", () => {
 
 describe("getUser", () => {
     const processor = new DroneViolations
+    const size = processor.violations.size
+
     const drone: Drone = {
-        serialNumber: "SN-DBZBtXSR5R",
+        serialNumber: "SN-qn0v__kyTH",
         timeStamp: new Date(),
         positionX: 100,
         positionY: 100,
         distance: 150,
     }
 
-    const vio: Violation = {
-        pilotId: "P-REh9qYIG9A",
-        firstName: "Wayne",
-        lastName: "Jakubowski",
-        phoneNumber: "+210862175106",
-        email: "wayne.jakubowski@example.com",
-        serialNumber: "SN-DBZBtXSR5R",
-        lastSeen: drone.timeStamp,
-        positionX: 100,
-        positionY: 100,
-        distance: 150,
-    }
-    
-       
-    it("processor.violations.set() adds a new violation", async () => {
-        await expect(processor.getUser(drone)).resolves.toBe(vio);
+    it("checks if violations Map grows after calling getUser", async () => {
+        await processor.getUser(drone)
+        expect(processor.violations.size).toBeGreaterThan(size)
+        
     });
-
+    
 });
 
 

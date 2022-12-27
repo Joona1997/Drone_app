@@ -8,7 +8,7 @@
     "postinstall": " tsc",
     "watch-node": "nodemon backend/src/server.ts",
     "watch-ts": "tsc -w",
-    "build": "tsc --project ./backend",
+    "build": "tsc --project ./backend && cd frontend && npm run build && cp -r build ../",
     "test": "cd backend && ts-jest ./"
   },
   "repository": {

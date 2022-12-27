@@ -8,18 +8,17 @@ const socket = io('https://drone-violations-app.herokuapp.com/', {
   transports: ['websocket', 'polling']
 });
 
-
+  
 const App = () => {
  
   // Stores the violation data
-  var [violations, setData] = useState([]);
-
-  
+  var [violations, setData] = useState(new Map);
+ 
   // Receives violation data from the server and stores it in the useState
   useEffect(() => {
     socket.on("receive_data", (violationString) => {
-      const violation = JSON.parse(violationString);
-      setData( violation)
+      const violation = new Map(JSON.parse(violationString));
+      setData(violations = violation)
     })
   }, [socket]);
 
@@ -27,7 +26,7 @@ const App = () => {
     <div className='flex-container'>
       <h1>Violation Data:</h1>
       <div className='list'>
-        {violations.map((violation) => <Violations key={violation.pilotId} violation={violation} />)}
+      {[...violations.values()].map(value => <Violations key={value.pilotId} violation={value} />)}
       </div>
       <div className='item-3'></div>
     </div>
