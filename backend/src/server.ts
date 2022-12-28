@@ -2,14 +2,7 @@ import express from 'express';
 import * as http from 'http';
 import { Server } from 'socket.io';
 import { DroneViolations } from "./DroneViolations";
-import cors from 'cors';
 
-
-// Fetches and processes data.
-const processor = new DroneViolations
-
-// Updates list every 2 seconds
-setInterval(processor.updateDroneList , 2000)
 
 const app = express();
 
@@ -26,11 +19,16 @@ const io = new Server(httpServer, {
   }
 });
 
-// Send violation list to clients every 1 seconds.
-setInterval(() => {
-    io.emit('receive_data', processor.getViolations) 
-}, 1000);
+// Fetches and processes data.
+const processor = new DroneViolations(io)
 
+// Updates list every 2 seconds
+setInterval(processor.updateDroneList , 2000)
+
+// Sends the current list of violations to new connections
+io.on("connection", (socket) => {
+    socket.emit('initialViolations', processor.getViolations)
+})
 
 // Handles erros
 app.use((req, res, next) => {

@@ -27,24 +27,6 @@ describe("parseXML", () => {
     });
 });
 
-describe("getUser", () => {
-    const processor = new DroneViolations
-    const size = processor.violations.size
 
-    const drone: Drone = {
-        serialNumber: "SN-qn0v__kyTH",
-        timeStamp: new Date(),
-        positionX: 100,
-        positionY: 100,
-        distance: 150,
-    }
-
-    it("checks if violations Map grows after calling getUser", async () => {
-        await processor.getUser(drone)
-        expect(processor.violations.size).toBeGreaterThan(size)
-        
-    });
-    
-});
 
 

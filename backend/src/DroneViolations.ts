@@ -1,14 +1,21 @@
 import axios from 'axios';
 import {XMLParser} from 'fast-xml-parser'
 import {Violation, Drone, Pilot} from './types'
+import { Server } from 'socket.io';
 
 
 // Fetches, processes and stores the violation data
 export class DroneViolations {
+
+  // Stores violations in a Map
   public violations;
 
-  constructor(){
+  // Handles sending updates to the clients
+  public io;
+
+  constructor(io: Server){
       this.violations = new Map()
+      this.io = io
   }
 
   // Method for server to access violations
@@ -54,11 +61,12 @@ export class DroneViolations {
         }
         // Gets new user if inside violation distance
         else if (drone.distance <= 100){
-          drone.distance = Math.round(drone.distance)
+          drone.distance = Math.round((drone.distance + Number.EPSILON)  * 100) / 100
           this.getUser(drone)
         }
       });
       
+      // Deletes old violations
       this.deleteOld() 
       
       // "response status is: 200"
@@ -76,7 +84,8 @@ export class DroneViolations {
   }
 
   // Gets the user data from a given drone
-  // Combines user and drone data and pushes it to the list of violations.
+  // Combines user and drone data. 
+  // Adds it to the violations Map and sends it to the clients.
   getUser = async (drone : Drone) => {
     try {
       // Pilot data
@@ -103,7 +112,11 @@ export class DroneViolations {
         distance: drone.distance,
       }
       
+      // Adds violation to local Map
       this.violations.set(drone.serialNumber, violation)
+
+      // Sends violation to clients
+      this.io.emit("newViolation", violation)
       
       //  "response status is: 200"
       console.log('getUser response status is: ', status);     
@@ -123,10 +136,13 @@ export class DroneViolations {
     const violation = this.violations.get(drone.serialNumber)
     violation.lastSeen = drone.timeStamp
     if(violation.distance > drone.distance){
-      violation.distance = Math.round(drone.distance)
+      violation.distance = Math.round((drone.distance + Number.EPSILON)  * 100) / 100
       violation.positionX = drone.positionX
       violation.positionY = drone.positionY
     }
+    // Sends update to clients
+    this.io.emit("update", violation)
+    
   }
 
   // Deletes violations that are older than 10 minutes.
@@ -138,6 +154,9 @@ export class DroneViolations {
     for (const violation of this.violations.values()){
       if (violation.lastSeen.getTime() <= timeLimit.getTime()){
         this.violations.delete(violation.serialNumber)
+
+        // Sends deletion order to clients
+        this.io.emit("delete", violation)
       }
     }
   }
@@ -166,6 +185,6 @@ export function getDistance(y : number, x : number): number {
   const centerX = 250000;
   const centerY = 250000;
   const distance: number = (Math.sqrt((Math.pow(centerX-x, 2)) + (Math.pow(centerY - y, 2))) / 1000);
-    
+  
   return distance
 }
