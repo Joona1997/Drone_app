@@ -10,8 +10,8 @@ const Canvas = props => {
   useEffect(() => {
     var canvas = canvasRef.current
     var c = canvas.getContext('2d')
-    canvas.width = 250
-    canvas.height = 250
+    canvas.width = 500
+    canvas.height = 500
     
     // Loads the map image
     var img = new Image();
@@ -20,17 +20,17 @@ const Canvas = props => {
     // Draws the map over and over
     function animate() {
         
-      c.drawImage(img, 300, 110, 700, 700, 0, 0, 250, 250)
+      c.drawImage(img, 300, 110, 700, 700, 0, 0, 500, 500)
 
       // Makes the circle
       c.strokeStyle = "yellow";
       c.beginPath();
-      c.arc(125, 125, 50, 0, 2 * Math.PI);
+      c.arc(250, 250, 100, 0, 2 * Math.PI);
       c.stroke();
 
       // Makes the dot
-      const x = violation.positionX / 2 
-      const y = canvas.height - violation.positionY / 2 
+      const x = violation.positionX  
+      const y = canvas.height - violation.positionY  
       c.strokeStyle = "red";
       c.beginPath();
       c.arc(x, y, 1, 0, 2 * Math.PI);
