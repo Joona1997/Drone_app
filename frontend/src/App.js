@@ -19,8 +19,8 @@ const App = () => {
   // Stores the modified time for the popup
   const [popupTime, setPopupTime] = useState()
  
-  // Stores the violation data
-  var [violations, setData] = useState(new Map);
+  // Stores all the violation data
+  var [violations, setData] = useState(new Map());
  
   // Receives initial violation data from the server and stores it in the useState
   useEffect(() => {

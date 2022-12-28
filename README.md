@@ -1,4 +1,4 @@
-Project made for Reaktors job application pre-assigment.
+Project made for Reaktors job application pre-assignment.
 
 Brief for the assignment can be found at:
 https://assignments.reaktor.com/birdnest/

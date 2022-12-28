@@ -2,13 +2,11 @@ import React from 'react'
 import '../styles.css'
 import Canvas from './Canvas'
 
+// A popup window that shows pilot data and a map location of the closest distance.
 function Popup({trigger, data, setTrigger, time}) {
      
-
     return (trigger) ? (
-        
         <div className="popup">
-            
             <div className='popup-inner'>
                 <button className="close-btn" onClick={() => {setTrigger(false)}}>
                     x

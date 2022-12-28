@@ -13,7 +13,7 @@ export class DroneViolations {
   // Handles sending updates to the clients
   public io;
 
-  constructor(io: Server){
+  constructor(io: Server) {
       this.violations = new Map()
       this.io = io
   }
@@ -56,11 +56,11 @@ export class DroneViolations {
         }
         
         // Check to see if drone is already in the list
-        if(this.violations.has(drone.serialNumber)){
+        if (this.violations.has(drone.serialNumber)) {
           this.updateViolation(drone)
         }
         // Gets new user if inside violation distance
-        else if (drone.distance <= 100){
+        else if (drone.distance <= 100) {
           drone.distance = Math.round((drone.distance + Number.EPSILON)  * 100) / 100
           this.getUser(drone)
         }
@@ -132,7 +132,7 @@ export class DroneViolations {
   }
 
   // Updates violations lastSeen time. Also updates distance if new is closer.
-  updateViolation(drone: Drone) {
+  updateViolation = (drone: Drone) => {
     const violation = this.violations.get(drone.serialNumber)
     violation.lastSeen = drone.timeStamp
     if(violation.distance > drone.distance){
@@ -164,7 +164,7 @@ export class DroneViolations {
 }
 
 // Parses XML string
-export function parseXML(data: string){
+export const parseXML = (data: string) => {
   // Parsing the XML file
   const parser = new XMLParser(options);
   const parsedXml = parser.parse(data);
@@ -181,7 +181,7 @@ const options = {
 };
 
 // Calculates the distance between two points (The nest and the drone).
-export function getDistance(y : number, x : number): number {
+export const getDistance = (y : number, x : number) => {
   const centerX = 250000;
   const centerY = 250000;
   const distance: number = (Math.sqrt((Math.pow(centerX-x, 2)) + (Math.pow(centerY - y, 2))) / 1000);

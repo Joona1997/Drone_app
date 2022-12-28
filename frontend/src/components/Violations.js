@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../styles.css';
 
 
-
+// List component, shows one violation data.
+// When clicked, opens a popup window.
 function Violations ({setTrigger, setData, setTime, violation})  {
 
   // Makes the date nicer

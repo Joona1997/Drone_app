@@ -1,5 +1,5 @@
-import { DroneViolations, getDistance, parseXML } from "../src/DroneViolations";
-import { Drone} from "../src/types.d";
+import {  getDistance, parseXML } from "../src/DroneViolations";
+
 
 describe("getDistance", () => {
     const Y = 350000
