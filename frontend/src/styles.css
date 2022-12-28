@@ -54,10 +54,12 @@ body{
 }
 
 .popup-inner {
+  
   position: relative;
   padding: 32px;
   width: 100%;
   max-width: 800px;
+  max-height: 500px;
   
   background-color: rgb(21, 27, 32);
 }
@@ -75,7 +77,10 @@ body{
 .popup-components {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  
+  flex-wrap: wrap;
+  justify-content:space-between;
+  
 }
 
 .popup-list {
@@ -86,5 +91,9 @@ body{
 
 .map {
   display: flex;
-  align-content: stretch;
+  
+  width:50vw;
+  height:50vw;
+  max-width: 500px;
+  max-height: 500px;
 }
