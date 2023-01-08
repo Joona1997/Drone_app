@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import Popup from './components/Popup'
 
 // Connect to the socket
-const socket = io('https://drone-violations-app.herokuapp.com/', {
+const socket = io('localhost:3001', {
   transports: ['websocket', 'polling']
 });
 

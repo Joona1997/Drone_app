@@ -17,7 +17,7 @@ function Popup({trigger, data, setTrigger, time}) {
                         <div>Last seen: {time}</div>
                         <div>Closest distance: {data.distance} meters</div>
                         <div>Phone number: {data.phoneNumber}</div>
-                        <div>Email: {data.phoneNumber}</div>
+                        <div>Email: {data.email}</div>
                     </div>
                     <div >
                         <div>Cordinates: ({data.positionX}, {data.positionY})</div>

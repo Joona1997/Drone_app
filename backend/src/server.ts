@@ -2,6 +2,7 @@ import express from 'express';
 import * as http from 'http';
 import { Server } from 'socket.io';
 import { DroneViolations } from "./DroneViolations";
+import axios from 'axios'
 
 
 const app = express();
@@ -9,7 +10,7 @@ const app = express();
 // Server handling
 const httpServer = http.createServer(app);
 
-app.use(express.static('build'))
+//app.use(express.static('build'))
 
 // Start the Socket
 const io = new Server(httpServer, {
@@ -29,6 +30,8 @@ setInterval(processor.updateDroneList , 2000)
 io.on("connection", (socket) => {
     socket.emit('initialViolations', processor.getViolations)
 })
+
+app.get("/drones", (req: any, res: any) => res.send(processor.getViolations));
 
 // Handles erros
 app.use((req, res) => {
